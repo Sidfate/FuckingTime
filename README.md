@@ -1,2 +1,2 @@
 # FuckingTime
-too smart to be lazy
+too lazy to be smart
