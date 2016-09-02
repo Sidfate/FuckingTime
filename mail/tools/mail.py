@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-
 import sys
 reload(sys)
+sys.path.append('..')
 sys.setdefaultencoding('utf8')
 
+import smtplib
 from email import encoders
 from email.header import Header
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from email.utils import parseaddr, formataddr
-import smtplib
+from conf.global_setting import MAIL, DEBUG
 
 class Mail():
-    config = {
-        'from'     : '',
-        'password' : '',
-        'to'       : [],
-        'smtp'     : ''
-    }
+
+    def __init__(self):
+        self.config = MAIL
+        if DEBUG is True:
+            self.config['to'] = self.config['to_test']
 
     def formatAddr(self, s):
         name, addr = parseaddr(s)
@@ -35,7 +35,7 @@ class Mail():
 
     def send(self):
         server = smtplib.SMTP(self.config['smtp'], 25)
-        server.set_debuglevel(1)
+        #server.set_debuglevel(1)
         server.login(self.config['from'], self.config['password'])
         server.sendmail(self.config['from'], self.config['to'], self.msg.as_string())
         server.quit()
